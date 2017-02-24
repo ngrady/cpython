@@ -3,6 +3,9 @@ dist: trusty
 sudo: false
 group: beta
 
+git:
+    depth: 10
+
 branches:
     only:
         - 2.7
@@ -19,6 +22,7 @@ env:
   - TESTING=cpython
 
 matrix:
+  fast_finish: true
   include:
     - os: linux
       language: cpp
@@ -29,15 +33,13 @@ matrix:
         - ./configure
       script:
         - echo '#include "Python.h"' > test.cc && $CXX -c test.cc -o /dev/null -I ./Include -I .
+  exclude:
+    - os: osx
+      compiler: gcc
 
-# Travis provides only 2 cores, so don't overdue the parallelism and waste memory.
+# Travis provides only 2 cores, so don't overdo the parallelism and waste memory.
 before_script:
   - |
-      if ! git diff --name-only $TRAVIS_COMMIT_RANGE | grep -qvE '(\.(rst|yml)$)|(^Doc)/'
-      then
-        echo "Only docs were updated, stopping build process."
-        exit
-      fi
       ./configure --with-pydebug
       make -j4
 
