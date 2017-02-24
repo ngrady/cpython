@@ -588,6 +588,11 @@ PIPE_MAX_SIZE = 4 * 1024 * 1024 + 1
 # for a discussion of this number).
 SOCK_MAX_SIZE = 16 * 1024 * 1024 + 1
 
+universal_crt = False
+if os.name == 'nt':
+    from distutils.msvccompiler import get_build_version
+    universal_crt = get_build_version() >= 14.0
+
 is_jython = sys.platform.startswith('java')
 
 try:
