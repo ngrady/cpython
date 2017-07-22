@@ -3,8 +3,12 @@ dist: trusty
 sudo: false
 group: beta
 
-# To cache doc-building dependencies.
-cache: pip
+git:
+    depth: 10
+
+branches:
+    only:
+        - 2.7
 
 branches:
   only:
